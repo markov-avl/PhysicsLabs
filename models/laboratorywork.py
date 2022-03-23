@@ -1,6 +1,6 @@
-from pylatex import Document, Section, NewPage, VerticalSpace, Center, FlushRight, LargeText
+from pylatex import Document, Section, NewPage, VerticalSpace, Center, FlushRight, LargeText, Package
 from pylatex.utils import NoEscape
-from .enviroments import Titlepage
+from .enviroments import Titlepage, Sloppypar
 from .commands import MakeUppercase
 
 
@@ -12,8 +12,9 @@ class LaboratoryWork(Document):
             inputenc='utf8',
             lmodern=True,
             page_numbers=True,
-            indent=False,
+            indent=True,
             document_options=["a4paper", "12pt"],
+            font_size='large',
             geometry_options=dict(tmargin='2cm', lmargin='1.5cm', rmargin='1.5cm')
         )
         self._number = number
@@ -21,12 +22,15 @@ class LaboratoryWork(Document):
         self._group = group
         self._course = course
         self._student = student
+        self.packages.append(Package('indentfirst'))
+        # self.preamble.append(NoEscape(r'\onehalfspacing '))
 
     def compile(self, filename: str) -> None:
         self._titlepage()
-        self._purpose()
-        self._brief_theory()
-        self._experiments()
+        with self.create(Sloppypar()):
+            self._purpose()
+            self._brief_theory()
+            self._experiments()
         self.generate_pdf(filename, clean_tex=False)
 
     def _titlepage(self) -> None:

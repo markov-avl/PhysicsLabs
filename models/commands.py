@@ -1,6 +1,5 @@
-from pylatex import Command
+from pylatex.base_classes import CommandBase
 
 
-class MakeUppercase(Command):
-    def __init__(self, arguments: any) -> None:
-        super().__init__('MakeUppercase', arguments)
+class MakeUppercase(CommandBase):
+    _latex_name = 'MakeUppercase'
