@@ -30,7 +30,7 @@ class LaboratoryWork(Document):
         with self.create(Sloppypar()):
             self._purpose()
             self._brief_theory()
-            self._experiments()
+            self._main()
         self.generate_pdf(filename, clean_tex=False)
 
     def _titlepage(self) -> None:
@@ -66,9 +66,9 @@ class LaboratoryWork(Document):
     def brief_theory(self) -> None:
         raise NotImplementedError
 
-    def _experiments(self) -> None:
-        with self.create(Section('Описание экспериментов')):
-            self.experiments()
+    def _main(self) -> None:
+        with self.create(Section('Ход работы')):
+            self.main()
 
-    def experiments(self) -> None:
+    def main(self) -> None:
         raise NotImplementedError

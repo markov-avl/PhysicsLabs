@@ -1,3 +1,4 @@
+import math
 from pylatex import NoEscape, Subsection
 
 from models import LaboratoryWork
@@ -43,9 +44,10 @@ class LaboratoryWork1(LaboratoryWork):
             расстояние между ними, измеренное по силовой линии.
         """))
 
-    def experiments(self) -> None:
+    def main(self) -> None:
         with self.create(Subsection(NoEscape(r'График зависимости потенциала $\varphi$ от координаты $x$ в опыте с '
                                              r'2-мя плоскими электродами'))):
+            # формулы
             self.append(NoEscape(r"""
                 $$\varphi = const$$
                 $$\vec{E} = -grad$$
@@ -54,19 +56,38 @@ class LaboratoryWork1(LaboratoryWork):
                 $$|\vec{E}| = |\frac{\Delta \varphi}{\Delta s}|$$
             """))
 
+            fraction = 3
+
             # вычисление E_i
-            x = [0, 2.8, 7.3, 12.3, 16.65, 21.75, 25.45]
+            e_measurement = r'\frac{\textup{В}}{\textup{м}}'
+            x = list(map(lambda i: round(i / 100, fraction), [0, 2.8, 7.3, 12.3, 16.65, 21.75, 25.45]))
             phi = [11.5, 10, 8, 6, 4, 2, 0]
-            E = list()
+            e = list()
             for x_i in range(1, len(x)):
-                E.append((phi[x_i - 1] - phi[x_i]) / (x[x_i] - x[x_i - 1]))
-                self.append(NoEscape(fr"""
-                    $E_{{ {x_i} }} = \frac{{ {phi[x_i - 1]} - {phi[x_i]} }}
-                    {{ {round(x[x_i] / 100, 3)} - {round(x[x_i - 1] / 100, 3)} }} = 
-                    {round(E[-1], 3)}$ \\
-                """))
+                e.append(round((phi[x_i - 1] - phi[x_i]) / (x[x_i] - x[x_i - 1]), fraction))
+                self.append(NoEscape(r"""
+                    $E_%s = \frac{%s - %s}{%s - %s} = %s ~ %s$ \\
+                """ % (x_i, phi[x_i - 1], phi[x_i], x[x_i], x[x_i - 1], e[-1], e_measurement)))
 
+            # вычисление Eср и tan(phi)
+            e_average = round(sum(e) / len(e), fraction)
+            self.append(NoEscape(r"""
+                $E_\textup{ср} = %s ~ %s \\$
+            """ % (e_average, e_measurement)))
 
+            # вычисление delta(E_i)
+            delta_e_i = list()
+            delta_e_i_2 = list()
+            for i, e_i in enumerate(e):
+                delta_e_i_2.append(round((e_average - e_i) ** 2, fraction))
+                delta_e_i.append(round(math.sqrt(delta_e_i_2[-1]), fraction))
+                self.append(NoEscape(r"""
+                    $(\Delta E_{%s})^2 = (%s - %s)^2 = %s ~ %s 
+                    ~ \Rightarrow ~
+                    \Delta E_{%s} = %s ~ %s \\$
+                """ % (i + 1, e_average, e_i, delta_e_i_2[-1], e_measurement, i + 1, delta_e_i[-1], e_measurement)))
+
+            # tan(phi)
 
 
 def main():
