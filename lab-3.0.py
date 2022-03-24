@@ -69,11 +69,11 @@ class LaboratoryWork1(LaboratoryWork):
                     $E_%s = \frac{%s - %s}{%s - %s} = %s ~ %s$ \\
                 """ % (x_i, phi[x_i - 1], phi[x_i], x[x_i], x[x_i - 1], e[-1], e_measurement)))
 
-            # вычисление Eср и tan(phi)
+            # вычисление Eср
             e_average = round(sum(e) / len(e), fraction)
             self.append(NoEscape(r"""
-                $E_\textup{ср} = %s ~ %s \\$
-            """ % (e_average, e_measurement)))
+                $E_\textup{ср} = \frac{\sum_{i = 1}^{%s} E_i}{%s} =  %s ~ %s \\$
+            """ % (len(e), len(e), e_average, e_measurement)))
 
             # вычисление delta(E_i)
             delta_e_i = list()
