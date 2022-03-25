@@ -1,5 +1,5 @@
 import math
-from pylatex import NoEscape, Subsection
+from pylatex import NoEscape, Subsection, LineBreak
 
 from models import LaboratoryWork
 
@@ -45,7 +45,7 @@ class LaboratoryWork1(LaboratoryWork):
         """))
 
     def main(self) -> None:
-        with self.create(Subsection(NoEscape(r'График зависимости потенциала $\varphi$ от координаты $x$ в опыте с '
+        with self.create(Subsection(NoEscape(r'Зависимость потенциала $\varphi$ от координаты $x$ в опыте с '
                                              r'2-мя плоскими электродами'))):
             # формулы
             self.append(NoEscape(r"""
@@ -55,6 +55,7 @@ class LaboratoryWork1(LaboratoryWork):
                 \frac{\partial}{\partial z}\vec{k}$$
                 $$|\vec{E}| = |\frac{\Delta \varphi}{\Delta s}|$$
             """))
+            self.append(LineBreak())
 
             fraction = 3
 
@@ -66,28 +67,49 @@ class LaboratoryWork1(LaboratoryWork):
             for x_i in range(1, len(x)):
                 e.append(round((phi[x_i - 1] - phi[x_i]) / (x[x_i] - x[x_i - 1]), fraction))
                 self.append(NoEscape(r"""
-                    $E_%s = \frac{%s - %s}{%s - %s} = %s ~ %s$ \\
-                """ % (x_i, phi[x_i - 1], phi[x_i], x[x_i], x[x_i - 1], e[-1], e_measurement)))
+                    $E_%s = \frac{\varphi_{%s} - \varphi_{%s}}{x_{%s} - x_{%s}} = \frac{%s - %s}{%s - %s} = %s ~ %s$ \\
+                """ % (x_i, x_i - 1, x_i, x_i, x_i - 1, phi[x_i - 1], phi[x_i], x[x_i], x[x_i - 1], e[-1],
+                       e_measurement)))
+            self.append(LineBreak())
 
             # вычисление Eср
             e_average = round(sum(e) / len(e), fraction)
             self.append(NoEscape(r"""
-                $E_\textup{ср} = \frac{\sum_{i = 1}^{%s} E_i}{%s} =  %s ~ %s \\$
+                $E_\textup{ср} = \frac{\sum_{i = 1}^{%s} E_i}{%s} =  %s ~ %s \\ \\ $
             """ % (len(e), len(e), e_average, e_measurement)))
 
-            # вычисление delta(E_i)
-            delta_e_i = list()
+            # вычисление delta(E_i)^2
             delta_e_i_2 = list()
             for i, e_i in enumerate(e):
                 delta_e_i_2.append(round((e_average - e_i) ** 2, fraction))
-                delta_e_i.append(round(math.sqrt(delta_e_i_2[-1]), fraction))
                 self.append(NoEscape(r"""
-                    $(\Delta E_{%s})^2 = (%s - %s)^2 = %s ~ %s 
-                    ~ \Rightarrow ~
-                    \Delta E_{%s} = %s ~ %s \\$
-                """ % (i + 1, e_average, e_i, delta_e_i_2[-1], e_measurement, i + 1, delta_e_i[-1], e_measurement)))
+                    $(\Delta E_{%s})^2 = (E_\textup{ср} - E_{%s})^2 = (%s - %s)^2 = %s ~ %s$ \\
+                """ % (i + 1, i + 1, e_average, e_i, delta_e_i_2[-1], e_measurement)))
+            self.append(LineBreak())
 
-            # tan(phi)
+            # вычисление delta(E)
+            delta_e = round(2.4460 * math.sqrt(sum(delta_e_i_2) / (len(e) * (len(e) - 1))), fraction)
+            self.append(NoEscape(r"""
+                $\Delta E = \tau_{%s,0.95} \sqrt{\frac{\sum_{i = 1}^{%s} (\Delta E_i)^2}{%s(%s - 1)}} = %s ~ %s$ \\
+            """ % (len(e), len(delta_e_i_2), len(e), len(e),  delta_e, e_measurement)))
+
+            # погрешность
+            delta_e = round(2.4460 * math.sqrt(sum(delta_e_i_2) / (len(e) * (len(e) - 1))), fraction)
+            self.append(NoEscape(r"""
+                $E = E_\textup{ср} \pm \Delta E = %s \pm %s ~ %s$ \\ \\
+            """ % (e_average, delta_e, e_measurement)))
+
+            # соотношения
+            phi_ratio = round(phi[0] / (x[-1] * 100), fraction)
+            self.append(NoEscape(r"""
+                $\varphi = \frac{\varphi_{%s}}{x_{%s}} = \frac{%s}{%s} = %s$ \\
+            """ % (0, len(x), phi[0], x[-1] * 100, phi_ratio)))
+            epsilon = round(delta_e / e_average, fraction)
+            self.append(NoEscape(r"""
+                $\varepsilon = \frac{\Delta E}{E_\textup{ср}} = \frac{%s}{%s} = %s$ \\
+            """ % (delta_e, e_average, epsilon)))
+
+            # TODO: последние коэффициенты не сходятся, - надо подобрать данные, чтоб сходилось!!!!!!!!!!
 
 
 def main():
