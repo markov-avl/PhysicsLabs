@@ -114,12 +114,12 @@ class LaboratoryWork1(LaboratoryWork):
 
 def main():
     LaboratoryWork1(
-        number=3.01,
+        number=3.1,
         name='Изучение электростатического поля',
         group='Б9119-02.03.03техпро',
         course=3,
         student='Марков А.В.'
-    ).compile('result/lab-3.01')
+    ).compile('result/lab-3.1')
 
 
 if __name__ == '__main__':
