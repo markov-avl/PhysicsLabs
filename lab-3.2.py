@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from pylatex import NoEscape, Subsection, LongTabu, MultiRow
 from pylatex.utils import bold
 
-from models import LaboratoryWork
+import models
 
 
 @dataclass
@@ -21,7 +21,7 @@ class Data:
     IU: float | None = None
 
 
-class LaboratoryWork2(LaboratoryWork):
+class LaboratoryWork(models.LaboratoryWork):
     def purpose(self) -> None:
         self.append(NoEscape(r"""
             Определение сопротивления с помощью закона Ома на однородном участке цепи. Ознакомление с обработкой
@@ -383,7 +383,7 @@ class LaboratoryWork2(LaboratoryWork):
 
 
 def main():
-    LaboratoryWork2(
+    LaboratoryWork(
         number=3.2,
         name='Изучение вольтамперной характеристики проводников методом наименьших квадратов',
         group='Б9119-02.03.03техпро',

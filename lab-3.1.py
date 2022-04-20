@@ -1,10 +1,10 @@
 import math
 from pylatex import NoEscape, Subsection, LineBreak
 
-from models import LaboratoryWork
+import models
 
 
-class LaboratoryWork1(LaboratoryWork):
+class LaboratoryWork(models.LaboratoryWork):
     def purpose(self) -> None:
         self.append(NoEscape(r"""
             Изучение законов электростатики и электростатического поля.

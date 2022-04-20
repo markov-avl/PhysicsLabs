@@ -5,7 +5,7 @@ from .commands import MakeUppercase
 
 
 class LaboratoryWork(Document):
-    def __init__(self, number: int | float, name: str, group: str, course: int, student: str) -> None:
+    def __init__(self, number: int | float | str, name: str, group: str, course: int, student: str) -> None:
         super().__init__(
             documentclass='article',
             fontenc='T2A',
@@ -23,7 +23,6 @@ class LaboratoryWork(Document):
         self._course = course
         self._student = student
         self.packages.append(Package('indentfirst'))
-        # self.preamble.append(NoEscape(r'\onehalfspacing '))
 
     def compile(self, filename: str) -> None:
         self._titlepage()
