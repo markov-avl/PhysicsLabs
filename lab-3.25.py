@@ -25,7 +25,9 @@ class Experiment:
 
 class LaboratoryWork(models.LaboratoryWork):
     def purpose(self) -> None:
-        pass
+        self.append(NoEscape(r"""
+            Научиться определять сигнал с помощью осциллографа
+        """))
 
     def brief_theory(self) -> None:
         pass
