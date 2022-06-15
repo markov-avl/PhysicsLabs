@@ -26,11 +26,30 @@ class Experiment:
 class LaboratoryWork(models.LaboratoryWork):
     def purpose(self) -> None:
         self.append(NoEscape(r"""
-            Научиться определять сигнал с помощью осциллографа
+            Ознакомиться с принципом работы электронного осциллографа и приобретение навыков измерения некоторых
+            электрических величин с помощью электронного осциллографа.
         """))
 
     def brief_theory(self) -> None:
-        pass
+        self.append(NoEscape(r"""
+            $$U = U_{max} \cdot sin(\omega t + \varphi_0),$$
+            
+            где $U$ -- мгновенное значение переменного напряжения, $U_{max}$ -- максимальное значение напряжения,
+            $\omega$ -- угловая скорость, $t$ -- время, $\varphi_0$ -- начальная фаза напряжения,
+            $(\omega t + \varphi_0)$ -- фаза. \\
+            
+            $$\omega = \frac{2 \pi}{T},$$
+            
+            где $T$ -- период. \\
+            
+            $$T = \frac{Z_T}{N_T},$$
+            
+            где $N_T$ -- количество периодов, $Z_T$ -- количество клеток на $N_T$ периодов. \\
+            
+            $$U_{max} = \frac{Z_T \cdot M}{2},$$
+            
+            где $Z_T$ -- количество клеток, $M$ -- масштаб $U$.
+        """))
 
     def main(self) -> None:
         self.append(NoEscape(r"""
@@ -119,15 +138,34 @@ class LaboratoryWork(models.LaboratoryWork):
                               color="lightgray")
                 table.add_hline()
 
+        self.append(NoEscape(r"""
+            $U_{max_3} = \pm %s ~ \textup{В}$ \\
+        """ % experiments[2].U_max))
+        self.append(NoEscape(r"""
+            $T_3 = %s ~ \textup{с}$ \\
+        """ % experiments[2].T))
+        self.append(NoEscape(r"""
+            $\omega_3 = %s ~ \textup{с}^{-1}$ \\
+        """ % int(experiments[2].omega)))
+        self.append(NoEscape(r"""
+            $U_3 = %s \cdot sin(%s t) ~ \textup{В}$ \\
+        """ % (experiments[2].U_max, int(experiments[2].omega))))
+        self.append(NoEscape(r"""
+            $U_{max_3} = (%s \pm 0.05) ~ \textup{В} \Rightarrow \varepsilon_{U} = %s\%%$ \\
+        """ % (experiments[2].U_max, int(0.05 / experiments[2].U_max * 100))))
+        self.append(NoEscape(r"""
+            $T_3 = (%s \pm %s) ~ \textup{с} \Rightarrow \varepsilon_{T} = %s\%%$ \\
+        """ % (experiments[2].T, experiments[2].delta_T, int(experiments[2].delta_T / experiments[2].T * 100))))
+
 
 def main():
     LaboratoryWork(
-        number=3.25,
+        number=3.0,
         name='Изучение электронного осциллографа',
         group='Б9119-02.03.03техпро',
         course=3,
         student='Марков А.В.'
-    ).compile('result/lab-3.25')
+    ).compile('result/lab-3.0')
 
 
 if __name__ == '__main__':

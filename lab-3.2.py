@@ -79,42 +79,42 @@ class LaboratoryWork(models.LaboratoryWork):
         # ]
 
         # мои данные (измененные)
-        # datas = [
-        #     Data(number=1, l=0.3, U=0.4, I=0.115),
-        #     Data(number=2, l=0.3, U=0.5, I=0.145),
-        #     Data(number=3, l=0.3, U=0.6, I=0.175),
-        #     Data(number=4, l=0.3, U=0.7, I=0.2),
-        #     Data(number=5, l=0.3, U=0.8, I=0.225),
-        #     Data(number=1, l=0.4, U=0.4, I=0.09),
-        #     Data(number=2, l=0.4, U=0.5, I=0.115),
-        #     Data(number=3, l=0.4, U=0.6, I=0.135),
-        #     Data(number=4, l=0.4, U=0.7, I=0.16),
-        #     Data(number=5, l=0.4, U=0.8, I=0.18),
-        #     Data(number=1, l=0.5, U=0.4, I=0.07),
-        #     Data(number=2, l=0.5, U=0.5, I=0.085),
-        #     Data(number=3, l=0.5, U=0.6, I=0.105),
-        #     Data(number=4, l=0.5, U=0.7, I=0.12),
-        #     Data(number=5, l=0.5, U=0.8, I=0.14)
-        # ]
+        datas = [
+            Data(number=1, l=0.3, U=0.4, I=0.115),
+            Data(number=2, l=0.3, U=0.5, I=0.145),
+            Data(number=3, l=0.3, U=0.6, I=0.175),
+            Data(number=4, l=0.3, U=0.7, I=0.2),
+            Data(number=5, l=0.3, U=0.8, I=0.225),
+            Data(number=1, l=0.4, U=0.4, I=0.09),
+            Data(number=2, l=0.4, U=0.5, I=0.115),
+            Data(number=3, l=0.4, U=0.6, I=0.135),
+            Data(number=4, l=0.4, U=0.7, I=0.16),
+            Data(number=5, l=0.4, U=0.8, I=0.18),
+            Data(number=1, l=0.5, U=0.4, I=0.07),
+            Data(number=2, l=0.5, U=0.5, I=0.085),
+            Data(number=3, l=0.5, U=0.6, I=0.105),
+            Data(number=4, l=0.5, U=0.7, I=0.12),
+            Data(number=5, l=0.5, U=0.8, I=0.14)
+        ]
 
         # Данные Саши
-        datas = [
-            Data(number=1, l=0.5, U=0.4, I=0.07),
-            Data(number=2, l=0.5, U=0.5, I=0.09),
-            Data(number=3, l=0.5, U=0.6, I=0.105),
-            Data(number=4, l=0.5, U=0.9, I=0.16),
-            Data(number=5, l=0.5, U=1.2, I=0.21),
-            Data(number=1, l=0.3, U=0.3, I=0.09),
-            Data(number=2, l=0.3, U=0.4, I=0.115),
-            Data(number=3, l=0.3, U=0.5, I=0.145),
-            Data(number=4, l=0.3, U=0.6, I=0.17),
-            Data(number=5, l=0.3, U=0.7, I=0.198),
-            Data(number=1, l=0.4, U=0.3, I=0.07),
-            Data(number=2, l=0.4, U=0.4, I=0.09),
-            Data(number=3, l=0.4, U=0.5, I=0.11),
-            Data(number=4, l=0.4, U=0.75, I=0.164),
-            Data(number=5, l=0.4, U=0.9, I=0.198)
-        ]
+        # datas = [
+        #     Data(number=1, l=0.5, U=0.4, I=0.07),
+        #     Data(number=2, l=0.5, U=0.5, I=0.09),
+        #     Data(number=3, l=0.5, U=0.6, I=0.105),
+        #     Data(number=4, l=0.5, U=0.9, I=0.16),
+        #     Data(number=5, l=0.5, U=1.2, I=0.21),
+        #     Data(number=1, l=0.3, U=0.3, I=0.09),
+        #     Data(number=2, l=0.3, U=0.4, I=0.115),
+        #     Data(number=3, l=0.3, U=0.5, I=0.145),
+        #     Data(number=4, l=0.3, U=0.6, I=0.17),
+        #     Data(number=5, l=0.3, U=0.7, I=0.198),
+        #     Data(number=1, l=0.4, U=0.3, I=0.07),
+        #     Data(number=2, l=0.4, U=0.4, I=0.09),
+        #     Data(number=3, l=0.4, U=0.5, I=0.11),
+        #     Data(number=4, l=0.4, U=0.75, I=0.164),
+        #     Data(number=5, l=0.4, U=0.9, I=0.198)
+        # ]
 
         # чужие данные
         # datas = [
@@ -396,9 +396,12 @@ class LaboratoryWork(models.LaboratoryWork):
                        round(delta_r, fraction),
                        round(delta_r * 10 ** 2, fraction - 2))))
 
+                # self.append(NoEscape(r"""
+                #     $R_{%s} = R_{%s,\textup{ср}} \pm \Delta R_{%s} = %s \pm %s \cdot 10^{-2}~\textup{Ом}$ \\ [0.5cm]
+                # """ % (data.l, data.l, data.l, round(r_average, fraction), round(delta_r * 10 ** 2, fraction - 2))))
                 self.append(NoEscape(r"""
-                    $R_{%s} = R_{%s,\textup{ср}} \pm \Delta R_{%s} = %s \pm %s \cdot 10^{-2}~\textup{Ом}$ \\ [0.5cm]
-                """ % (data.l, data.l, data.l, round(r_average, fraction), round(delta_r * 10 ** 2, fraction - 2))))
+                    $R_{%s} = R_{%s,\textup{ср}} \pm \Delta R_{%s} = $\\ [0.5cm]
+                """ % (data.l, data.l, data.l)))
 
 
 def main():
@@ -407,7 +410,7 @@ def main():
         name='Изучение вольтамперной характеристики проводников методом наименьших квадратов',
         group='Б9119-02.03.03техпро',
         course=3,
-        student='Вишняков Александр'
+        student='Марков А.В.'
     ).compile('result/lab-3.2')
 
 
