@@ -79,22 +79,41 @@ class LaboratoryWork(models.LaboratoryWork):
         # ]
 
         # мои данные (измененные)
+        # datas = [
+        #     Data(number=1, l=0.3, U=0.4, I=0.115),
+        #     Data(number=2, l=0.3, U=0.5, I=0.145),
+        #     Data(number=3, l=0.3, U=0.6, I=0.175),
+        #     Data(number=4, l=0.3, U=0.7, I=0.2),
+        #     Data(number=5, l=0.3, U=0.8, I=0.225),
+        #     Data(number=1, l=0.4, U=0.4, I=0.09),
+        #     Data(number=2, l=0.4, U=0.5, I=0.115),
+        #     Data(number=3, l=0.4, U=0.6, I=0.135),
+        #     Data(number=4, l=0.4, U=0.7, I=0.16),
+        #     Data(number=5, l=0.4, U=0.8, I=0.18),
+        #     Data(number=1, l=0.5, U=0.4, I=0.07),
+        #     Data(number=2, l=0.5, U=0.5, I=0.085),
+        #     Data(number=3, l=0.5, U=0.6, I=0.105),
+        #     Data(number=4, l=0.5, U=0.7, I=0.12),
+        #     Data(number=5, l=0.5, U=0.8, I=0.14)
+        # ]
+
+        # Данные Саши
         datas = [
-            Data(number=1, l=0.3, U=0.4, I=0.115),
-            Data(number=2, l=0.3, U=0.5, I=0.145),
-            Data(number=3, l=0.3, U=0.6, I=0.175),
-            Data(number=4, l=0.3, U=0.7, I=0.2),
-            Data(number=5, l=0.3, U=0.8, I=0.225),
-            Data(number=1, l=0.4, U=0.4, I=0.09),
-            Data(number=2, l=0.4, U=0.5, I=0.115),
-            Data(number=3, l=0.4, U=0.6, I=0.135),
-            Data(number=4, l=0.4, U=0.7, I=0.16),
-            Data(number=5, l=0.4, U=0.8, I=0.18),
             Data(number=1, l=0.5, U=0.4, I=0.07),
-            Data(number=2, l=0.5, U=0.5, I=0.085),
+            Data(number=2, l=0.5, U=0.5, I=0.09),
             Data(number=3, l=0.5, U=0.6, I=0.105),
-            Data(number=4, l=0.5, U=0.7, I=0.12),
-            Data(number=5, l=0.5, U=0.8, I=0.14)
+            Data(number=4, l=0.5, U=0.9, I=0.16),
+            Data(number=5, l=0.5, U=1.2, I=0.21),
+            Data(number=1, l=0.3, U=0.3, I=0.09),
+            Data(number=2, l=0.3, U=0.4, I=0.115),
+            Data(number=3, l=0.3, U=0.5, I=0.145),
+            Data(number=4, l=0.3, U=0.6, I=0.17),
+            Data(number=5, l=0.3, U=0.7, I=0.198),
+            Data(number=1, l=0.4, U=0.3, I=0.07),
+            Data(number=2, l=0.4, U=0.4, I=0.09),
+            Data(number=3, l=0.4, U=0.5, I=0.11),
+            Data(number=4, l=0.4, U=0.75, I=0.164),
+            Data(number=5, l=0.4, U=0.9, I=0.198)
         ]
 
         # чужие данные
@@ -213,7 +232,7 @@ class LaboratoryWork(models.LaboratoryWork):
                    round(datas[0].delta_lambda, fraction))))
             # R
             self.append(NoEscape(r"""
-                $R_{%s,%s} = \frac{1}{\lambda_{%s,%s}} = \frac{1}{%s} = %s~\textup{В}$ \\
+                $R_{%s,%s} = \frac{1}{\lambda_{%s,%s}} = \frac{1}{%s} = %s~\textup{Ом}$ \\
             """ % (datas[0].l,
                    datas[0].number,
                    datas[0].l,
@@ -233,9 +252,9 @@ class LaboratoryWork(models.LaboratoryWork):
                 lambda_sum[data.l] = iu_sum[data.l] / u_2_sum[data.l]
                 delta_lambda_sum[data.l] = tau * math.sqrt(
                     (
-                        sum([d.U ** 2 for d in filter(lambda d: d.l == data.l, datas)]) *
-                        sum([d.I ** 2 for d in filter(lambda d: d.l == data.l, datas)]) -
-                        iu_sum[data.l] ** 2
+                            sum([d.U ** 2 for d in filter(lambda d: d.l == data.l, datas)]) *
+                            sum([d.I ** 2 for d in filter(lambda d: d.l == data.l, datas)]) -
+                            iu_sum[data.l] ** 2
                     ) / ((experiments - 1) * (sum([d.U ** 2 for d in filter(lambda d: d.l == data.l, datas)]) ** 2))
                 )
 
@@ -341,7 +360,7 @@ class LaboratoryWork(models.LaboratoryWork):
                    round(delta_lambda_sum[datas[0].l], fraction))))
             # R
             self.append(NoEscape(r"""
-                $R_{%s,%s} = \frac{U_{%s,%s}}{I_{%s,%s}} = \frac{%s}{%s} = %s~\textup{В}$ \\ [1cm]
+                $R_{%s,%s} = \frac{U_{%s,%s}}{I_{%s,%s}} = \frac{%s}{%s} = %s~\textup{Ом}$ \\ [1cm]
             """ % (datas[0].l,
                    datas[0].number,
                    datas[0].l,
@@ -362,7 +381,7 @@ class LaboratoryWork(models.LaboratoryWork):
                 experiment = list(filter(lambda d: d.l == data.l, datas))
                 r_average = sum([d.R for d in experiment]) / len(experiment)
                 self.append(NoEscape(r"""
-                    $R_{%s,\textup{ср}} = \frac{\sum^{%s}_{i = 1} R_{%s,i}}{%s} = %s~\textup{В}$ \\
+                    $R_{%s,\textup{ср}} = \frac{\sum^{%s}_{i = 1} R_{%s,i}}{%s} = %s~\textup{Ом}$ \\
                 """ % (data.l, experiments, data.l, experiments, round(r_average, fraction))))
 
                 r_2_sum = sum([(r_average - d.R) ** 2 for d in experiment])
@@ -370,7 +389,7 @@ class LaboratoryWork(models.LaboratoryWork):
                 self.append(NoEscape(r"""
                     $\Delta R_{%s} =
                         \tau_{%s,0.95} \sqrt{\frac{\sum_{i = 1}^{%s} (\Delta R_{%s,i})^2}{%s(%s - 1)}} = 
-                        %s \sqrt{\frac{%s}{%s}} = %s = %s \cdot 10^{-2}~\textup{В}$ \\
+                        %s \sqrt{\frac{%s}{%s}} = %s = %s \cdot 10^{-2}~\textup{Ом}$ \\
                 """ % (data.l, experiments, experiments, data.l, experiments, experiments, tau,
                        round(r_2_sum, fraction),
                        len(experiment) * (len(experiment) - 1),
@@ -378,7 +397,7 @@ class LaboratoryWork(models.LaboratoryWork):
                        round(delta_r * 10 ** 2, fraction - 2))))
 
                 self.append(NoEscape(r"""
-                    $R_{%s} = R_{%s,\textup{ср}} \pm \Delta R_{%s} = %s \pm %s \cdot 10^{-2}~\textup{В}$ \\ [0.5cm]
+                    $R_{%s} = R_{%s,\textup{ср}} \pm \Delta R_{%s} = %s \pm %s \cdot 10^{-2}~\textup{Ом}$ \\ [0.5cm]
                 """ % (data.l, data.l, data.l, round(r_average, fraction), round(delta_r * 10 ** 2, fraction - 2))))
 
 
@@ -388,7 +407,7 @@ def main():
         name='Изучение вольтамперной характеристики проводников методом наименьших квадратов',
         group='Б9119-02.03.03техпро',
         course=3,
-        student='Марков А.В.'
+        student='Вишняков Александр'
     ).compile('result/lab-3.2')
 
 

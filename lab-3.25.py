@@ -9,7 +9,7 @@ import models
 
 @dataclass
 class Experiment:
-    experimenter: str
+    number: int
     N: int
     Z: float
     T_scale: float
@@ -48,11 +48,11 @@ class LaboratoryWork(models.LaboratoryWork):
         """))
 
         experiments = [
-            Experiment(experimenter='Абакумов Б.И.', N=4, Z=8.2, T_scale=0.001, U_2=3, U_scale=0.5),
-            Experiment(experimenter='Давыдов А.М.', N=4, Z=8.3, T_scale=0.001, U_2=5.4, U_scale=0.2),
-            Experiment(experimenter='Марков А.В.', N=4, Z=9.2, T_scale=0.001, U_2=5.4, U_scale=0.2),
-            Experiment(experimenter='Павлов А.C.', N=6, Z=9.2, T_scale=0.001, U_2=3.2, U_scale=0.5),
-            Experiment(experimenter='Хмелевский Е.Д.', N=5, Z=8.5, T_scale=0.001, U_2=5.8, U_scale=0.2)
+            Experiment(number=1, N=4, Z=8.2, T_scale=0.001, U_2=3, U_scale=0.5),
+            Experiment(number=2, N=4, Z=8.3, T_scale=0.001, U_2=5.4, U_scale=0.2),
+            Experiment(number=3, N=4, Z=9.2, T_scale=0.001, U_2=5.4, U_scale=0.2),
+            Experiment(number=4, N=6, Z=9.2, T_scale=0.001, U_2=3.2, U_scale=0.5),
+            Experiment(number=5, N=5, Z=8.5, T_scale=0.001, U_2=5.8, U_scale=0.2)
         ]
         fraction = 4
 
@@ -65,9 +65,9 @@ class LaboratoryWork(models.LaboratoryWork):
             experiment.U_max = experiment.U_2 * (experiment.U_scale / 2)
             experiment.delta_U = experiment.U_scale / 10
 
-        with self.create(LongTabu("|X[1.7l]|X[0.6l]|X[l]|X[l]|X[l]|X[1.6l]|", row_height=1.5)) as table:
+        with self.create(LongTabu("|X[1.5l]|X[0.6l]|X[l]|X[l]|X[l]|X[1.6l]|", row_height=1.5)) as table:
             table.add_hline()
-            table.add_row(["Экспериментатор",
+            table.add_row(["Эксперимент",
                            NoEscape(r"$N~(T)$"),
                            NoEscape(r"$Z~(T)$"),
                            NoEscape(r"$T_\textup{масштаб}$"),
@@ -80,7 +80,7 @@ class LaboratoryWork(models.LaboratoryWork):
             table.add_hline()
 
             for experiment in experiments:
-                table.add_row([experiment.experimenter,
+                table.add_row([experiment.number,
                                NoEscape(r"$%s$" % (round(experiment.N, fraction, ))),
                                NoEscape(r"$%s$" % (round(experiment.Z, fraction, ))),
                                NoEscape(r"$%s$" % (round(experiment.T_scale, fraction, ))),
@@ -91,9 +91,9 @@ class LaboratoryWork(models.LaboratoryWork):
                               color="lightgray")
                 table.add_hline()
 
-        with self.create(LongTabu("|X[1.7l]|X[0.7l]|X[0.7l]|X[0.9l]|X[l]|X[0.7l]|X[0.6l]|", row_height=1.5)) as table:
+        with self.create(LongTabu("|X[1.5l]|X[0.7l]|X[0.7l]|X[0.9l]|X[l]|X[0.7l]|X[0.6l]|", row_height=1.5)) as table:
             table.add_hline()
-            table.add_row(["Экспериментатор",
+            table.add_row(["Эксперимент",
                            NoEscape(r"$T,~\textup{с}$"),
                            NoEscape(r"$\Delta T,~\textup{с}$"),
                            NoEscape(r"$\nu,~\textup{Гц}$"),
@@ -107,7 +107,7 @@ class LaboratoryWork(models.LaboratoryWork):
             table.add_hline()
 
             for experiment in experiments:
-                table.add_row([experiment.experimenter,
+                table.add_row([experiment.number,
                                NoEscape(r"$%s$" % (round(experiment.T, fraction),)),
                                NoEscape(r"$%s$" % (round(experiment.delta_T, fraction),)),
                                NoEscape(r"$%s$" % (round(experiment.nu, fraction),)),

@@ -8,6 +8,16 @@ from pylatex.utils import bold
 import models
 
 
+L = 1
+
+
+@dataclass
+class Experiment:
+    number: int
+    Ri: int
+    
+
+
 class LaboratoryWork(models.LaboratoryWork):
     def purpose(self) -> None:
         self.append(NoEscape(r"""
